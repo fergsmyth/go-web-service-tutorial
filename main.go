@@ -1,16 +1,17 @@
 package main
 
 import (
-	"net/http"
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
-// album struct with specifier for json name serialisation 
+
+// album struct with specifier for json name serialisation
 type album struct {
 	//ID string `json:"-"`
-	ID string `json:"id"`
-	Title string `json:"title"`
-	Artist string `json:"artist"`
-	Price float64 `json:"price"`
+	ID     string  `json:"id"`
+	Title  string  `json:"title"`
+	Artist string  `json:"artist"`
+	Price  float64 `json:"price"`
 }
 
 var albums = []album{
@@ -31,7 +32,7 @@ func getAlbums(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, albums)
 }
 
-func postAlbums(c *gin.Context){
+func postAlbums(c *gin.Context) {
 	var newAlbum album
 
 	if err := c.BindJSON(&newAlbum); err != nil {
@@ -42,14 +43,14 @@ func postAlbums(c *gin.Context){
 	c.IndentedJSON(http.StatusCreated, newAlbum)
 }
 
-func getAlbumByID(c *gin.Context){
+func getAlbumByID(c *gin.Context) {
 	albumID := c.Param("id")
-	
+
 	for _, a := range albums {
 		if a.ID == albumID {
 			c.IndentedJSON(http.StatusOK, a)
 			return
-		}	
+		}
 	}
 	c.IndentedJSON(http.StatusNotFound, gin.H{"message": "album not found"})
 }
